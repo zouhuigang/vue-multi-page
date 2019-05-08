@@ -272,6 +272,181 @@ webpack.config.js配置如下:
 dist目录下生成4个文件,index.html,index.js,login.html,login.js
 
 
+---
+
+# 引用CSS文件
+
+
+安装css处理器:
+
+
+	npm i style-loader css-loader -D
+
+
+修改index.js，内容如下:
+
+	import './css/style.css';   // 引入css
+	import './less/style.less'; // 引入less
+	
+	console.log('这里是打包文件入口-index.js');
+
+
+webpack.config.js
+
+	let path = require('path');
+	let HtmlWebpackPlugin = require('html-webpack-plugin');
+	
+	module.exports = {
+	    entry: {
+	        index: './src/index.js'
+	    },
+	    output: {
+	        filename: 'bundle.[hash:4].js',
+	        path: path.resolve('dist')
+	    },  
+	    plugins: [
+		        // 通过new一下这个类来使用插件
+		        new HtmlWebpackPlugin({
+		            // 用哪个html作为模板
+		            // 在src目录下创建一个index.html页面当做模板来用
+		            template: './src/index.html',
+		            hash: true, // 会在打包好的bundle.js后面加上hash串
+		        })
+		],
+	    module: {
+	        rules: [
+	            {
+	                test: /\.css$/,     // 解析css
+	                use: ['style-loader', 'css-loader'] // 从右向左解析
+	                /* 
+	                    也可以这样写，这种方式方便写一些配置参数
+	                    use: [
+	                        {loader: 'style-loader'},
+	                        {loader: 'css-loader'}
+	                    ]
+	                */
+	            }
+	        ]
+	    }
+	}
+
+
+index.html中添加css样式:
+
+	     <style type="text/css">
+		    *{
+		        margin:0;
+		        padding:0;
+		        box-sizing: border-box
+		    }
+	    </style>
+
+
+打包:
+
+	npm run dist
+
+
+在dist目录下的index.html中，发现了刚刚添加的css,而在index.js中import导入的css，则被打包进了bundle.ac75.js里面。
+
+
+此时打包后的css文件是以行内样式style的标签写进打包后的html页面中，如果样式很多的话，我们更希望直接用link的方式引入进去，这时候需要把css拆分出来.
+
+
+### 总结
+
+	js中import './css/style.css'; 导入的样式会被打包进js中。
+	html中的style仍然会在html中，至少还是标签形式，不是link形式。
+
+
+---
+
+### 提取js中的css
+>extract-text-webpack-plugin 插件相信用过的人都知道它是干什么的，它的功效就在于会将打包到js里的css文件进行一个拆分。
+
+
+安装:
+
+	// @next表示可以支持webpack4版本的插件
+	npm i extract-text-webpack-plugin@next -D
+
+
+修改webpack.config.js配置:
+
+	let path = require('path');
+	let HtmlWebpackPlugin = require('html-webpack-plugin');
+	// 拆分css样式的插件
+	let ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
+	
+	module.exports = {
+	    entry: {
+	        index: './src/index.js'
+	    },
+	    output: {
+	        filename: 'bundle.[hash:4].js',
+	        path: path.resolve('dist')
+	    },  
+	    plugins: [
+		        new HtmlWebpackPlugin({
+		            template: './src/index.html',
+		            hash: true, 
+	            }),
+	             // 拆分后会把css文件放到dist目录下的css/style.css
+	            new ExtractTextWebpackPlugin('css/style.css') 
+		],
+	    module: {
+	        rules: [
+	            {
+	                test: /\.css$/,     // 解析css
+	                use: ExtractTextWebpackPlugin.extract({
+	                    // 将css用link的方式引入就不再需要style-loader了
+	                    use: 'css-loader'       
+	                })
+	            }
+	        ]
+	    }
+	}
+
+	
+
+运行:
+
+	npm run build
+
+
+此时拆分完css后，打包的html页面就以link的方式去引入css了。
+
+
+打包不同的css文件:
+
+	// 正常写入的less
+	let styleLess = new ExtractTextWebpackPlugin('css/style.css');
+	// reset
+	let resetCss = new ExtractTextWebpackPlugin('css/reset.css');
+	
+	module.exports = {
+	    module: {
+	        rules: [
+	            {
+	                test: /\.css$/,
+	                use: resetCss.extract({
+	                    use: 'css-loader'
+	                })
+	            },
+	            {
+	                test: /\.less$/,
+	                use: styleLess.extract({
+	                    use: 'css-loader'
+	                })
+	            }
+	        ]
+	    },
+	    plugins: [
+	        styleLess,
+	        resetCss
+	    ]
+	}
+
 
 
 ### 参考文档
