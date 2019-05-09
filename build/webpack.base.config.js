@@ -4,6 +4,12 @@ let HtmlWebpackPlugin = require('html-webpack-plugin');
 let ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 // 打包前先清空dist目录
 let CleanWebpackPlugin = require('clean-webpack-plugin');
+//vue加载
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+
+function resolve(dir) {
+    return path.join(__dirname, '..', dir)
+}
 
 module.exports = {
     entry: {
@@ -13,9 +19,19 @@ module.exports = {
     output: {
         filename: '[name].[hash:4].js',      // 打包后会根据entry里面的名称，生成新的name.js
         path: path.resolve('dist')
-    },  
+    }, 
+    resolve: {
+        extensions: ['.js', '.vue', '.json'],
+        alias: {
+          'vue$': 'vue/dist/vue.esm.js',
+          '@': resolve('src'),
+          'template': resolve('src/template'),
+          'components': resolve('src/components')
+        }
+    }, 
     plugins: [
             new CleanWebpackPlugin(),
+            new VueLoaderPlugin(),
             new HtmlWebpackPlugin({
                 template: './src/template/welcome/index.html',   
                 filename: 'index.html',//打包后的文件名称
@@ -31,6 +47,19 @@ module.exports = {
 	],
     module: {
         rules: [
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader',
+                options: {
+                    loaders: {
+                        css: 'vue-style-loader!css-loader',
+                        less: 'vue-style-loader!css-loader!less-loader'
+                    },
+                    postLoaders: {
+                        html: 'babel-loader'
+                    }
+                }
+            },
             {
                 test: /\.css$/,     // 解析css
                 use: ExtractTextWebpackPlugin.extract({

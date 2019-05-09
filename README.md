@@ -127,3 +127,26 @@ WEBPACK的执行顺序:
 	}
 
 	https://segmentfault.com/a/1190000016458913?utm_source=tag-newest
+
+
+---
+# 搭配vue使用
+
+
+	https://segmentfault.com/a/1190000011265006
+
+
+安装vue
+
+	npm install vue
+	npm install vue-router
+	npm install vue-loader vue-style-loader vue-template-compiler -D
+
+	合并配置
+	npm install webpack-merge -D 
+
+
+
+参考文档:
+
+	https://github.com/JaneSu/multiple-vue-page
