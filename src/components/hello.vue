@@ -2,6 +2,7 @@
   <div class="hello">
     <ul>
       <li><a href="login.html" target="_blank">【打开本地其他页面】登录页面</a></li>
+      <li><a href="test.html" target="_blank">【打开本地其他页面】测试页面</a></li>
       <li><a href="https://www.matougr.com" target="_blank">【打开外部链接】码头工人在线工具</a></li>
     </ul>
   </div>

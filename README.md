@@ -147,6 +147,42 @@ WEBPACK的执行顺序:
 
 
 
+---
+
+# 安装iview
+
+	npm install zantui
+
+
+报错:
+
+	ModuleParseError: Module parse failed: Unexpected character ' '
+	You may need an appropriate loader to handle this file type.
+
+字体图标和svg图片都可以通过file-loader来解析:
+
+		 {
+	                test: /\.(eot|ttf|woff|svg)$/,
+	                use: 'file-loader'
+	      }
+
+安装:
+
+	npm i file-loader -D
+
+
+这样即使样式中引入了这类格式的图标或者图片都没有问题了，img如果也引用svg格式的话，配合上面写好的html-withimg-loader就都没有问题了。
+
+
+---
+
+# 提取公共代码
+
+上面生成大index.js和test.js中，都引用了vue，在这2个js代码中，含有2分vue.js代码，所以需要把vue.js单独的提取出来。不然每个页面的js中都包含了一份vue.js代码了。
+
+
+
+
 参考文档:
 
 	https://github.com/JaneSu/multiple-vue-page
