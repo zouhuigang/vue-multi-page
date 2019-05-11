@@ -5,12 +5,17 @@
       <li><a href="test.html" target="_blank">【打开本地其他页面】测试页面</a></li>
       <li><a href="https://www.matougr.com" target="_blank">【打开外部链接】码头工人在线工具</a></li>
     </ul>
+    <footer-component></footer-component>
   </div>
 </template>
 
 <script>
+import FooterComponent from './footer.vue'
 export default {
   name: 'hello',
+  components: {
+      FooterComponent
+  },
   data () {
     return {
       msg: 'VUE多页面脚手架_这是组件里面的内容'

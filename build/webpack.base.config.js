@@ -19,7 +19,8 @@ module.exports = {
     },
     output: {
         filename: 'js/[name].[hash:4].js',      // 打包后会根据entry里面的名称，生成新的name.js
-        path: path.resolve('dist')
+        path: path.resolve('dist'),
+        publicPath:'/',//需要设置为根目录，不然会找不到字体文件
     }, 
     // 提取公共代码
     optimization: {
@@ -99,8 +100,26 @@ module.exports = {
                 exclude: /node_modules/  // 排除掉node_modules，优化打包速度
             },
             {
-                test: /\.(eot|ttf|woff|svg)$/,
-                use: 'file-loader'
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                loader: 'url-loader',
+                options: {
+                  limit: 10000,
+                  name: 'images/[name].[hash:7].[ext]'
+                }
+            },
+            {
+                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                loader: 'url-loader',
+                options: {
+                  limit: 10000,
+                  name: 'fonts/[name].[hash:7].[ext]',
+                //   publicPath:'http://localhost:8080/',
+                //   outputPath:''
+                }
+            },
+            {//解析html中的图片
+                test: /\.(htm|html)$/,
+                use: 'html-withimg-loader'
             }
         ]
     }

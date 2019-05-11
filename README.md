@@ -171,7 +171,7 @@ WEBPACK的执行顺序:
 	npm i file-loader -D
 
 
-这样即使样式中引入了这类格式的图标或者图片都没有问题了，img如果也引用svg格式的话，配合上面写好的html-withimg-loader就都没有问题了。
+这样即使样式中引入了这类格式的图标或者图片都没有问题了，img如果也引用svg格式的话，配合下面的写好的html-withimg-loader就都没有问题了。
 
 
 ---
@@ -181,8 +181,79 @@ WEBPACK的执行顺序:
 上面生成大index.js和test.js中，都引用了vue，在这2个js代码中，含有2分vue.js代码，所以需要把vue.js单独的提取出来。不然每个页面的js中都包含了一份vue.js代码了。
 
 
+	   // 提取公共代码
+	    optimization: {
+	        splitChunks: {
+	            cacheGroups: {
+	                vendor: {   // 抽离第三方插件
+	                    test: /node_modules/,   // 指定是node_modules下的第三方包
+	                    chunks: 'initial',
+	                    name: 'vendor',  // 打包后的文件名，任意命名    
+	                    // 设置优先级，防止和自定义的公共代码提取时被覆盖，不进行打包
+	                    priority: 10    
+	                },
+	                // common: { // 抽离自己写的公共代码，common这个名字可以随意起
+	                //     chunks: 'initial',
+	                //     name: 'common',  // 任意命名
+	                //     minSize: 0    // 只要超出0字节就生成一个新包
+	                // }
+	            }
+	        }
+	    },
+	
+插件:
 
+		  new HtmlWebpackPlugin({
+	                template: './src/template/welcome/index.html',   
+	                filename: 'index.html',//打包后的文件名称
+	                chunks: ['vendor','index']   //将entry名称对应的js文件，打包进对应的filename页面中
+	            }),
+	            new HtmlWebpackPlugin({
+	                template: './src/template/login/index.html',
+	                filename: 'login.html',
+	                chunks: ['vendor','login']
+	            }),
+	            new HtmlWebpackPlugin({
+	                template: './src/template/test/index.html',
+	                filename: 'test.html',
+	                chunks: ['vendor','test']
+	            }),
+
+
+### 转换引用的图片
+
+
+	Module not found: Error: Can't resolve '../images/logo/matougr.svg'
+
+
+页面中经常会用到img标签，img引用的图片地址也需要一个loader来帮我们处理好
+
+	npm i html-withimg-loader -D
+	npm i file-loader url-loader -D #处理图片方面，也需要loader
+
+
+文件内容:
+
+	         {
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                loader: 'url-loader',
+                options: {
+                  limit: 8192,//小于8k的图片自动转成base64格式，并且不会存在实体图片
+                  name: 'images/[name].[hash:7].[ext]'
+                }
+            },
+
+
+
+### file-loader和url-loader的区别
+
+	1、url-loader依赖file-loader
+	2、当使用url-loader加载图片，图片大小小于上限值，则将图片转base64字符串，；否则使用file-loader加载图片，都是为了提高浏览器加载图片速度。
+	3、使用url-loader加载图片比file-loader更优秀\
+	4、url-loader封装了file-loader。url-loader不依赖于file-loader，即使用url-loader时，只需要安装url-loader即可，不需要安装file-loader，因为url-loader内置了file-loader
 
 参考文档:
 
 	https://github.com/JaneSu/multiple-vue-page
+	https://segmentfault.com/q/1010000012030622
+	https://blog.csdn.net/An_cf/article/details/84856199
