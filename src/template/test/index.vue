@@ -1,15 +1,18 @@
 <template>
     <div id="app">
-       <test-Com></test-Com>
-       <Table :columns="columns1" :data="data1"></Table>
+        <default-layout>
+            <test-Com></test-Com>
+            <Table :columns="columns1" :data="data1"></Table>
+        </default-layout>
     </div>
 </template>
 
 <script>
+import DefaultLayout from '@/layout/default.vue'
 import testCom from 'components/test.vue'
 export default {
   name: 'app',
-  components: { testCom },
+  components: { DefaultLayout,testCom },
   data(){
     return {
       columns1: [
@@ -56,14 +59,3 @@ export default {
   }
 }
 </script>
-
-<style>
-#app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-}
-</style>

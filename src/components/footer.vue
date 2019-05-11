@@ -70,3 +70,70 @@ export default {
   }
 }
 </script>
+<style scoped>
+.footer {
+    background: #fff;
+    color: #666
+}
+
+.footer-main {
+    width: 90%;
+    margin: 0 auto
+}
+
+.footer-main .ivu-row {
+    padding: 20px 0
+}
+
+.footer-main .ivu-row h4 {
+    margin-bottom: 8px
+}
+
+.footer-main .ivu-row h4 i {
+    font-size: 16px;
+    color: #9ea7b4;
+    position: relative;
+    top: 1px;
+    margin-right: 2px
+}
+
+.footer-main .ivu-row li {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+    padding-left: 8px
+}
+
+.footer-main ul {
+    list-style: none
+}
+
+.footer-aside,.footer-logo {
+    text-align: center
+}
+
+.footer-logo {
+    height: 45px
+}
+
+.footer-logo img {
+    height: 100%
+}
+
+.footer-author {
+    position: relative;
+    top: 10px
+}
+
+.footer-author img {
+    width: 80px
+}
+
+.footer-version {
+    font-size: 12px;
+    text-align: center;
+    padding: 20px 0 4px;
+    color: #c5c8ce;
+    padding-left: 6px
+}
+</style>
