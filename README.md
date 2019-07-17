@@ -1,6 +1,18 @@
 ### 多页面配置
 
 
+### 安裝
+
+	git clone git@github.com:zouhuigang/vue-multi-page.git
+
+	git checkout -b feature/vue
+	
+	git pull origin feature/vue
+
+	npm install
+
+
+
 ### 情况dist目录
 
 
