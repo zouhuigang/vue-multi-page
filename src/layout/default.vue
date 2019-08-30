@@ -1,32 +1,9 @@
 <template>
   <div class="wrapper">
-    <header-component></header-component>
-     <div class="wrapper-container">
-                    <Row>
-                        <!--左侧菜单 -->
-                        <i-col span="4" class="wrapper-navigate">
-                            <!-- <Navigate :type="activeKey"></Navigate> -->
-                        </i-col>
-                        <!--中间菜单 -->
-                        <i-col span="17">
-                            <div class="wrapper-content ivu-article">
-                                <slot></slot>
-                            </div>
-                        </i-col>
-                        <!-- 右侧菜单 -->
-                        <i-col span="3">
-                            <template>
-                                <a  href="javascript:;"  class="wrapper-aside wrapper-aside-no-padding">
-                                <img src="../images/ad/an_2.png">
-                                </a>
-                            </template>
-                        </i-col>
-                    </Row>
+     <div class="wrapper-content ivu-article">
+          <slot></slot>
       </div>
     <footer-component></footer-component>
-    <BackTop :height="100" :bottom="50">
-        <div class="top">返回顶端</div>
-    </BackTop>
   </div>
 </template>
 
@@ -47,6 +24,9 @@ export default {
 }
 </script>
 <style scoped>
+.wrapper-content{
+  padding:0px;
+}
   .top{
         padding: 10px;
         background: #2d8cf0;

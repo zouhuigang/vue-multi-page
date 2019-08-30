@@ -6,6 +6,8 @@ let ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 let CleanWebpackPlugin = require('clean-webpack-plugin');
 //vue加载
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+//复制
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
@@ -20,7 +22,7 @@ module.exports = {
     output: {
         filename: 'js/[name].[hash:4].js',      // 打包后会根据entry里面的名称，生成新的name.js
         path: path.resolve('dist'),
-        publicPath:'/',//需要设置为根目录，不然会找不到字体文件
+        publicPath:'./',//需要设置为根目录，不然会找不到字体文件
     }, 
     // 提取公共代码
     optimization: {
@@ -47,12 +49,18 @@ module.exports = {
           'vue$': 'vue/dist/vue.esm.js',
           '@': resolve('src'),
           'template': resolve('src/template'),
-          'components': resolve('src/components')
+          'components': resolve('src/components'),
+          'assets':resolve('src/assets'),
         }
     }, 
     plugins: [
             new CleanWebpackPlugin(),
             new VueLoaderPlugin(),
+            new CopyWebpackPlugin([{
+                from: 'src/assets/',
+                to:'assets/',
+                ignore: ['*.md']
+            }]),
             new HtmlWebpackPlugin({
                 template: './src/template/welcome/index.html',   
                 filename: 'index.html',//打包后的文件名称

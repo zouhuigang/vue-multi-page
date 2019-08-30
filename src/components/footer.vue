@@ -1,63 +1,28 @@
 <template>
- <div class="footer">
-            <div class="footer-main">
-                <Row>
-                    <i-col span="5">
-                        <h4>
-                            <Icon type="md-git-compare" />
-                            生态圈
-                        </h4>
-                        <ul>
-                            <li>
-                                <a href="https://www.matougr.com/" target="_blank">安橙在线工具箱</a> - 为有品质的生活
-                            </li>
-                        </ul>
-                    </i-col>
-                    <i-col span="5">
-                        <h4>
-                            <Icon type="ios-link"></Icon>
-                            站点推荐
-                        </h4>
-                        <ul>
-                            <li>
-                                <a href="https://regex101.com/" target="_blank">regex101</a> - 在线正则表达式调试
-                            </li>
-                            <li>
-                                <a href="https://www.chuangkit.com/" target="_blank">创客贴</a> - 平面设计工具
-                            </li>
-                            
-                        </ul>
-                    </i-col>
-                    <i-col span="5" offset="2">
-                        <h4>
-                            <Icon type="md-person" />
-                            关于我们
-                        </h4>
-                        <ul>
-                            <li>
-                                <a href="http://www.anooc.com/sitemap/sitemapindex.xml" target="_blank">网站地图</a>
-                            </li>
-                            <li>
-                                <a href="http://www.anooc.com/visitor" target="_blank">城市用户分布图</a>
-                            </li>
-                            <li>
-                                <a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action" target="_blank">赣ICP备16009868号-1</a>
-                            </li>
-                             <li>
-                                <a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action" target="_blank">赣ICP备16009868号-2</a>
-                            </li>     
-                        </ul>
-                    </i-col>
-                    <i-col span="5" offset="2">
-                        <div class="footer-aside">
-                            <div class="footer-logo">
-                                <img src="../images/logo/matougr.svg">
-                            </div>
-                        </div>
-                    </i-col>
-                </Row>
+<div class="navbar-fixed-bottom">
+        <div class="footer clearfix">
+            <div class="col-4">
+                <router-link to='/' tag="a" class="tac">
+                    <h6 class="ico">
+                        <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#iconhome"></use>
+                        </svg>
+                    </h6>
+                    <h6>首页</h6>
+                </router-link>
             </div>
-        </div>
+            <div class="col-4">
+              <router-link to='/user' tag="a" class="tac">
+                    <h6 class="ico">
+                        <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#iconavatarmanstylepeoplehairstylebarbersho"></use>
+                        </svg>
+                    </h6>
+                    <h6>我的</h6>
+              </router-link>
+            </div>
+    </div>
+</div>
 </template>
 
 <script>
@@ -65,75 +30,84 @@ export default {
   name: 'FooterComponent',
   data () {
     return {
-      msg: ''
+      actived: ''
     }
+  },
+  methods:{
+      jump() {
+         this.$router.push({   path:'/user'})
+      }
   }
 }
 </script>
 <style scoped>
-.footer {
-    background: #fff;
-    color: #666
+.icon {
+  width: 25px; 
+  height: 25px;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+.tac {
+  text-align: center;
 }
 
-.footer-main {
-    width: 90%;
-    margin: 0 auto
+.col-4 {
+    float: left;
+    width: 50%;
+}
+.navbar-fixed-bottom {
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #ffffff;
 }
 
-.footer-main .ivu-row {
-    padding: 20px 0
+.navbar-fixed-bottom .reddot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ff3e3e;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
 }
 
-.footer-main .ivu-row h4 {
-    margin-bottom: 8px
+.navbar-fixed-bottom .footer {
+  width: 100%;
+  padding: 8px 0px 6px 0px;
+  border-top: 1px solid #ccc;
 }
 
-.footer-main .ivu-row h4 i {
-    font-size: 16px;
-    color: #9ea7b4;
-    position: relative;
-    top: 1px;
-    margin-right: 2px
+.navbar-fixed-bottom .footer i {
+  font-size: 22px;
 }
 
-.footer-main .ivu-row li {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 5px;
-    padding-left: 8px
+.navbar-fixed-bottom .footer h6 {
+  height: 22px;
+  line-height: 22px;
 }
 
-.footer-main ul {
-    list-style: none
+.navbar-fixed-bottom .footer h6.ico {
+  height: 25px;
+  line-height: 25px;
 }
 
-.footer-aside,.footer-logo {
-    text-align: center
+.navbar-fixed-bottom .footer a {
+  color: #a0a0a0;
 }
 
-.footer-logo {
-    height: 45px
+.navbar-fixed-bottom .footer a.actived {
+  /*color: #ff6046;	color:#00af19;*/
+	color:#000;
+    font-weight: bold;
 }
 
-.footer-logo img {
-    height: 100%
-}
-
-.footer-author {
-    position: relative;
-    top: 10px
-}
-
-.footer-author img {
-    width: 80px
-}
-
-.footer-version {
-    font-size: 12px;
-    text-align: center;
-    padding: 20px 0 4px;
-    color: #c5c8ce;
-    padding-left: 6px
-}
 </style>
