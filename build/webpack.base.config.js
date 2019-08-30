@@ -6,6 +6,8 @@ let ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 let CleanWebpackPlugin = require('clean-webpack-plugin');
 //vue加载
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+//多页面入口js文件
+let utils = require('./utils');
 //复制
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -14,15 +16,11 @@ function resolve(dir) {
 }
 
 module.exports = {
-    entry: {
-        index: './src/template/welcome/index.js',
-        login: './src/template/login/index.js',
-        test:'./src/template/test/index.js',
-    },
+    entry: utils.entries(),
     output: {
         filename: 'js/[name].[hash:4].js',      // 打包后会根据entry里面的名称，生成新的name.js
         path: path.resolve('dist'),
-        publicPath:'./',//需要设置为根目录，不然会找不到字体文件
+        publicPath:'/',//需要设置为根目录，不然会找不到字体文件
     }, 
     // 提取公共代码
     optimization: {
@@ -55,32 +53,28 @@ module.exports = {
     }, 
     plugins: [
             new CleanWebpackPlugin(),
-            new VueLoaderPlugin(),
+            //把src下public文件夹下的所有内容直接拷贝到dist(输出目录)下
+            new CopyWebpackPlugin([{
+                from: 'src/public/',
+                to:'public/',
+                ignore: ['*.md']
+            }]),
             new CopyWebpackPlugin([{
                 from: 'src/assets/',
                 to:'assets/',
                 ignore: ['*.md']
             }]),
-            new HtmlWebpackPlugin({
-                template: './src/template/welcome/index.html',   
-                filename: 'index.html',//打包后的文件名称
-                chunks: ['vendor','index']   //将entry名称对应的js文件，打包进对应的filename页面中
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/template/login/index.html',
-                filename: 'login.html',
-                chunks: ['vendor','login']
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/template/test/index.html',
-                filename: 'test.html',
-                chunks: ['vendor','test']
-            }),
+            new VueLoaderPlugin(),
+            // ...utils.packHtml(),
              // 拆分后会把css文件放到dist目录下的css/style.css
             new ExtractTextWebpackPlugin('css/[name].[hash:4].css') 
 	],
     module: {
         rules: [
+            {
+                test: /\.ejs$/,
+                loader: 'ejs-html-loader',			     
+            },
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
@@ -93,6 +87,10 @@ module.exports = {
                         html: 'babel-loader'
                     }
                 }
+            },
+            {
+                test: /\.less$/,
+                loader: "style-loader!css-loader!less-loader",
             },
             {
                 test: /\.css$/,     // 解析css
@@ -125,9 +123,17 @@ module.exports = {
                 //   outputPath:''
                 }
             },
-            {//解析html中的图片
-                test: /\.(htm|html)$/,
-                use: 'html-withimg-loader'
+            {
+                test: /\.(ico)(\?.*)?$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 10000,
+                    name: 'images/[name].[hash:7].[ext]'
+                }
+            },
+            {//解析html中的图片和include html
+                test: /\.(htm|html)$/i,
+                loader: 'html-withimg-loader'
             }
         ]
     }
