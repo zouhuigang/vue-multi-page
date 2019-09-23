@@ -14,18 +14,17 @@ module.exports = merge(webpackBaseConfig, {
         inline: true,
         overlay: true,
         stats: { colors: true },
-        host: '127.0.0.1',
         port: '8080',
         proxy: {
           '/restricted': {
-                target:'http://192.168.50.60:8888', 
+                target:'https://c3.helendoctor.com', 
                 changeOrigin:true,
                 pathRewrite:{  
                     '^/restricted': '/restricted'
                 }
             },
             '/api': {
-                target:'http://192.168.50.60:8888', 
+                target:'https://c3.helendoctor.com', 
                 changeOrigin:true,
                 pathRewrite:{  
                     '^/api': '/api'

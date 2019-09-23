@@ -64,6 +64,11 @@ module.exports = {
                 to:'assets/',
                 ignore: ['*.md']
             }]),
+            //微信等验证文件
+            new CopyWebpackPlugin([{
+                from: 'src/verify/',
+                ignore: ['*.md']
+            }]),
             new VueLoaderPlugin(),
             // ...utils.packHtml(),
              // 拆分后会把css文件放到dist目录下的css/style.css

@@ -1,82 +1,156 @@
 <template>
-  <default-layout>
-      <swiper-component></swiper-component>
-      <div style="width: 90%;margin:10px auto;">
-          <Input prefix="ios-search" placeholder="请输入岗位名称或任务名称查找"  />
-      </div>
-
-      <div class="item-content">
-        <Row class="item" v-for="data in dataList">
-            <Row style="height:35px;line-height:35px;width:96%;margin:0 auto;margin-top:5px;">
-                <Col span="16" class="item-title">公司资料信息录入员</Col>
-                <Col span="8" style="text-align:right"><strong class="font">500</strong> 积分/天</Col>
-                <Col span="24" class="msg"><svg class="icon" aria-hidden="true"><use xlink:href="#iconlocation"></use></svg>北京市北京市</Col>
-                <Col span="24" class="msg"><svg class="icon" aria-hidden="true"><use xlink:href="#iconmt-icon-time"></use></svg>2019-01-27 15:14 早9:00-晚17:00</Col>
+    <div id="app">
+        <default-patient-layout :active="active">
+            <div class="main-section">
+              <section class="msection">
                 
-                <Col span="16" style="margin-bottom:15px;"><svg class="icon" aria-hidden="true"><use xlink:href="#iconfabu_huaban"></use></svg>发布时间:6月27日</Col>
-                <Col span="8" style="margin-bottom:15px;text-align:right"><Button class="ibutton">申请任务</Button></Col>
-            </Row>
-        </Row>
+                <van-row>
+                  <van-col span="8"><h2 class="van-doc-demo-block__title">我的预约</h2></van-col>
+                  <van-col span="8"  offset="8" style="text-align:right;padding: 8px 10px 8px 0;"><van-button icon="add-o"  size="small" type="primary" @click="jump">新建预约</van-button></van-col>
+              </van-row>
+              </section>
 
-      </div>
-  </default-layout>
+               <section class="van-doc-demo-section">
+                <van-list
+                  v-model="loading"
+                  :finished="finished"
+                  finished-text="没有更多了"
+                  @load="onLoad"
+                >
+                    <section 
+                    v-for="item in list"
+                    :key="item.id"
+                    :title="item.id"
+                    class="section-order"
+                    > 
+                      <!-- 我的预约 -->
+                      <order-one-component v-if="item.status>1" :data="item" :dataOne="userInfo.realname"></order-one-component>
+                      <order-two-component v-if="item.status==OrderUnConfirmed" :data="item" :dataOne="userInfo.realname"></order-two-component>
+                    </section>
+                </van-list>
+              </section>
+
+
+           </div>
+        </default-patient-layout>
+    </div>
 </template>
 
+
 <script>
-import SwiperComponent from 'components/swiper.vue'
-import DefaultLayout from '@/layout/default.vue'
+import DefaultPatientLayout from '@/layout/patient/default.vue'
+import OrderOneComponent from '@/components/order/one.vue'
+import OrderTwoComponent from '@/components/order/two.vue'
+import { Toast  } from 'vant';
+import api from '@/libs/api.js';
+import store from '@/store';
+import url from '@/libs/url';
 export default {
-  name: 'hello',
-  components: {
-      DefaultLayout,
-      SwiperComponent
-  },
-  data () {
+  name: 'app',
+  components: { DefaultPatientLayout,OrderOneComponent,OrderTwoComponent },
+  data(){
     return {
-      dataList: [
-        { name: 'Runoob' },
-        { name: 'Google' },
-        { name: 'Taobao' },
-        { name: 'Taobao' }
-      ]
+      active:"home",
+      list: [],
+      loading: false,
+      finished: false,
+      userInfo:{},
+      OrderUnknown:0,
+      OrderUnConfirmed:1,
+      OrderConfirmed:2,
+      OrderPaymented:3,
+      OrderSeekedDoctor: 4,
+      OrderApplyRefund:5,
+      OrderRefunded:6,
     }
-  }
+  },
+   methods: {
+     getUserInfo(){
+                let form_data={}
+                form_data["source_page"]="user_myorder_list"
+                return api.getUserInfo(JSON.stringify(form_data)).then( res => {
+                     if(res.error ==api.ERR_OK){
+                          this.userInfo=res.result.info;
+                    }
+                });
+            },
+      onLoad() {
+            let form_data={}
+            return api.MyOrderList(JSON.stringify(form_data)).then((res)=>{
+                    // 加载状态结束
+                    this.loading = false;
+                    if(res.error ==api.ERR_OK){
+                        
+                        if(res.result.list.length>0){
+                            this.list=res.result.list;
+                            this.finished = true;
+                            // for (let i = 0; i < this.fileList.length; i++) { 
+                            //     let rd={}
+                            //     rd["type"]="image";
+                            //     rd["content"]=this.fileList[i].image;
+                            //     this.list.push(rd);
+                            // }
+                          
+                        }else{
+                          // 数据全部加载完成
+                          this.finished = true;
+                        }
+                    }else{
+                        Toast(res.error_description);
+                    }
+            })
+    },
+    jump(){
+      window.location.href="/user/story/submit"
+    }
+   }, 
+   computed:{
+    },
+    created(){
+
+    },
+    mounted(){//验证本地存储的token是否合法
+        this.getUserInfo();
+    }
 }
 </script>
 
-<style  scoped>
-.icon {
-  width: 16px; 
-  height: 16px;
-  fill: currentColor;
-  overflow: hidden;
-  margin-right:5px;
-  padding-top:5px;
+<style scoped>
+
+.main-section{
+    box-sizing: border-box;
+    min-height: 100vh;
+    background: #f0f0f0;
 }
-.item-content{
-  width:100%;
-  margin-bottom:70px;
+.msection {
+    box-sizing: border-box;
+    background: #fff;
+    width:100%;
 }
 
-.item{
-  width:100%;
+
+.section-order{
+  padding: 10px;
+  margin: 10px 10px 0 10px;
+  border-radius: 8px;
   background: #fff;
-  margin-bottom:10px;
 }
-.font{
-  color:#f30;
-  font-size:18px;
+
+
+.van-doc-demo-block__title {
+    margin: 0;
+    padding: 15px 15px 15px;
+    color: rgba(69, 90, 100, 0.6);
+    font-weight: normal;
+    font-size: 14px;
 }
-.item-title{
-  font-size:16px;
-  font-weight: bold;
+
+div>>>.msg {
+    margin-left: 16px;
+    font-weight: normal;
+    font-size: 14px;
 }
-.ibutton{
-  border:1px solid #008000;
-  color:#008000;
-}
-.msg{
-  line-height:25px;
-  height:25px;
-}
+
+
+
 </style>

@@ -7,15 +7,15 @@ import 'assets/iconfont/iconfont.css'
 import 'assets/iconfont/iconfont.js'
 
 //swiper
-import VueAwesomeSwiper from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.css'
+// import VueAwesomeSwiper from 'vue-awesome-swiper'
+// import 'swiper/dist/css/swiper.css'
 
-import zantui from 'zantui'
-import 'zantui/dist/styles/zantui.css'
+import Vant from 'vant';
+import 'vant/lib/index.css';
 
 /* 安装插件 */
-Vue.use(zantui)
-Vue.use(VueAwesomeSwiper, /* { default global options } */)
+Vue.use(Vant)
+//Vue.use(VueAwesomeSwiper, /* { default global options } */)
 
 Vue.config.productionTip = false
 
