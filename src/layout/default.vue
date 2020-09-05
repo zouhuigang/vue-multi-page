@@ -3,7 +3,6 @@
      <div class="wrapper-content ivu-article">
           <slot></slot>
       </div>
-    <footer-component></footer-component>
   </div>
 </template>
 
