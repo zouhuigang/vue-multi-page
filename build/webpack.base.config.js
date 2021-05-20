@@ -17,11 +17,6 @@ function resolve(dir) {
 
 module.exports = {
     entry: utils.entries(),
-    output: {
-        filename: 'js/[name].[hash:4].js',      // 打包后会根据entry里面的名称，生成新的name.js
-        path: path.resolve('dist'),
-        publicPath: '/',//需要设置为根目录，不然会找不到字体文件
-    },
     // 提取公共代码
     optimization: {
         splitChunks: {
@@ -53,26 +48,9 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        //把src下public文件夹下的所有内容直接拷贝到dist(输出目录)下
-        new CopyWebpackPlugin([{
-            from: 'src/public/',
-            to: 'public/',
-            ignore: ['*.md']
-        }]),
-        new CopyWebpackPlugin([{
-            from: 'src/assets/',
-            to: 'assets/',
-            ignore: ['*.md']
-        }]),
-        //微信等验证文件
-        new CopyWebpackPlugin([{
-            from: 'src/verify/',
-            ignore: ['*.md']
-        }]),
         new VueLoaderPlugin(),
-        // ...utils.packHtml(),
         // 拆分后会把css文件放到dist目录下的css/style.css
-        new ExtractTextWebpackPlugin('css/[name].[hash:4].css')
+        new ExtractTextWebpackPlugin('css/[name].css')
     ],
     module: {
         rules: [
@@ -115,7 +93,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: 'images/[name].[hash:7].[ext]'
+                    name: 'images/[name].[hash:7].[ext]',
                 }
             },
             {
@@ -124,7 +102,6 @@ module.exports = {
                 options: {
                     limit: 10000,
                     name: 'fonts/[name].[hash:7].[ext]',
-                    //   publicPath:'http://localhost:8080/',
                     //   outputPath:''
                 }
             },
@@ -133,7 +110,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: 'images/[name].[hash:7].[ext]'
+                    name: 'images/[name].[hash:7].[ext]',
                 }
             },
             {//解析html中的图片和include html

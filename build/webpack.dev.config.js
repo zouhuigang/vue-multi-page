@@ -1,40 +1,33 @@
 const merge = require('webpack-merge');
 const webpackBaseConfig = require('./webpack.base.config.js');
+let path = require('path');
 //生成可运行的html
 let utils = require('./utils');
 
 module.exports = merge(webpackBaseConfig, {
+    mode: "development",
+    output: {
+        filename: 'js/[name].js',      // 打包后会根据entry里面的名称，生成新的name.js
+        path: path.resolve('../../static'),
+        publicPath: '/',//需要设置为根目录，不然会找不到字体文件
+    },
     plugins: [
         ...utils.packHtml(),
     ],
-    devServer: {//2018-06-28跨域解决
+    devServer: {
         historyApiFallback: true,
         disableHostCheck: true,
         hot: true,
         inline: true,
         overlay: true,
         stats: {colors: true},
-        port: '8080',
+        port: '8081',
         proxy: {
-            '/restricted': {
-                target: 'https://c3.helendoctor.com',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/restricted': '/restricted'
-                }
-            },
             '/api': {
-                target: 'http://47.100.163.22:20003',
+                target: 'http://127.0.0.1:8080',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': '/api'
-                }
-            },
-            '/mock': {
-                target: 'http://localhost',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/mock': '/mock'
                 }
             }
         }

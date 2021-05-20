@@ -1,5 +1,5 @@
 {
-  "name": "vue-multi-page",
+  "name": "behavior-captcha",
   "version": "1.0.0",
   "description": "npm init",
   "main": "index.js",
@@ -20,7 +20,10 @@
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
+    "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^8.0.5",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-vue-jsx": "^3.7.0",
     "clean-webpack-plugin": "^2.0.2",
     "css-loader": "^2.1.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
@@ -42,14 +45,8 @@
   "dependencies": {
     "axios": "^0.19.0",
     "copy-webpack-plugin": "^5.0.3",
-    "js-cookie": "^2.2.1",
-    "lrz": "^4.9.40",
-    "vant": "^2.8.1",
+    "html-res-webpack-plugin": "^4.0.5",
     "vue": "^2.6.10",
-    "vue-awesome-swiper": "^3.1.3",
-    "vue-router": "^3.0.6",
-    "vuex": "^3.1.1",
-    "weixin-js-sdk": "^1.4.0-test",
     "zantui": "^1.0.2"
   }
 }
