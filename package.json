@@ -47,6 +47,7 @@
     "copy-webpack-plugin": "^5.0.3",
     "html-res-webpack-plugin": "^4.0.5",
     "vue": "^2.6.10",
+    "vue-fullpage.js": "^0.1.7",
     "zantui": "^1.0.2"
   }
 }

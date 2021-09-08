@@ -50,7 +50,7 @@ module.exports = {
         new CleanWebpackPlugin(),
         new VueLoaderPlugin(),
         // 拆分后会把css文件放到dist目录下的css/style.css
-        new ExtractTextWebpackPlugin('css/[name].css')
+        new ExtractTextWebpackPlugin('css/[name].[hash:8].css')
     ],
     module: {
         rules: [

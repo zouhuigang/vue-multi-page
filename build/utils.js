@@ -70,6 +70,7 @@ exports.packHtmlToNginx = function () {
             filename = 'index.html';
         }
         const conf = {
+            hash: true,
             template: template,
             filename: filename,//打包后的文件名称
             chunks: ['vendor', chunks_js]   // 将entry名称对应的js文件，打包进对应的filename页面中

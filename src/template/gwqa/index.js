@@ -2,6 +2,8 @@ import Vue from 'Vue'
 import cell from './index.vue'
 import zantui from 'zantui'
 import 'zantui/dist/styles/zantui.css'
+import VueFullPage from 'vue-fullpage.js';
+Vue.use(VueFullPage);
 
 /* 安装插件 */
 Vue.use(zantui)
