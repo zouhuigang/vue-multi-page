@@ -1,7 +1,7 @@
 import axios from 'axios';
 //错误码
 const ERR_OK = 0;
-const API_PRE = "/api/post-tool/v1/"
+const API_PRE = "/api/reset/"
 
 //拦截请求
 axios.interceptors.request.use((config) => {
@@ -29,7 +29,8 @@ export default {
     similarCount (id,type,params) {
         return fetch(API_PRE+'collections/'+id+'/count/'+type, params)
     },
-    differSimilar (params){
-        return fetch(API_PRE+'collections/differ/similar', params)
+    //https://c3.yyang.net.cn/api/reset/Qwq/getSignPackage?url=111
+    shareWeiXinSign (url){
+        return fetch(API_PRE+'Qwq/getSignPackage?url='+url)
     }
 }
