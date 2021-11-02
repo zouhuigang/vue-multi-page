@@ -48,6 +48,11 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
+        new CopyWebpackPlugin([{
+            from: 'src/assets/',
+            to: 'assets/',
+            ignore: ['*.md']
+        }]),
         new VueLoaderPlugin(),
         // 拆分后会把css文件放到dist目录下的css/style.css
         new ExtractTextWebpackPlugin('css/[name].[hash:8].css')
@@ -97,12 +102,20 @@ module.exports = {
                 }
             },
             {
+                test: /\.(mp3)(\?.*)?$/,
+                loader: 'url-loader',
+                options: {
+                    name: 'assets/[name].[hash:7].[ext]'
+                }
+            },
+            {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
                     name: 'fonts/[name].[hash:7].[ext]',
-                    //   outputPath:''
+                    // publicPath:'/'
+                      outputPath:''
                 }
             },
             {
