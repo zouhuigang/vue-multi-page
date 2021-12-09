@@ -1,3 +1,4 @@
 {
-	"presets": ["@babel/preset-env"]   // 从右向左解析
+	"presets": ["@babel/preset-env"],   // 从右向左解析
+	"plugins": ["transform-vue-jsx"]
 }

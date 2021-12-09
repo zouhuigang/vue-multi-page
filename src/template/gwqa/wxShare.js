@@ -12,6 +12,7 @@ import api from '@/libs/api.js';
         api.shareWeiXinSign(encodeURIComponent(url)).then(res => {
             let shareInfo = res.data;
             //https://juejin.cn/post/6844904000962166791
+            //https://www.cnblogs.com/joshua317/p/4761948.html
 
             wx.config({
                 //在测试的时候一定要开启这个 debug: true 只要有报错就一定会弹出来，
@@ -31,7 +32,7 @@ import api from '@/libs/api.js';
         }),
         wx.ready(() => {
             //一定要保证分享的url和传递给后端url是一致的，如果路由发生了变化一定要获取当前的路由
-          let links = location.href.split('#')[0];
+            let links = location.href.split('#')[0];
           let optionApp = {
             title: '大爱小善，助力公益', // 分享标题, 请自行替换
             desc:'兑移动积分，可当钱花又添"好德"福报',

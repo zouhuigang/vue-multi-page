@@ -24,8 +24,18 @@
         </div>
       </div>
        <div class="section">
-        <div class="demo-carousel" v-on:click="csChange">
-             <img src="https://cdn-oss.yyang.net.cn/static/wishyoung/10.jpeg">
+        <div class="demo-carousel bg">
+             <video ref="videoPlayer" class="video-js video-box"
+              loop 
+              preload="auto"
+              x-webkit-airplay="allow"
+              playsinline
+              webkit-playsinline>
+                <source
+                    src="https://cdn-oss.yyang.net.cn/static/wishyoung/1630997736197444.mp4"
+                    type="video/mp4"
+                />
+                </video>
         </div>
       </div>
        <!-- <div class="section">
@@ -67,14 +77,14 @@
     </full-page>
 
  
-  <Modal v-model="showVideo" footer-hide :closable="false" @on-cancel="cancel">
-          <video ref="videoPlayer" class="video-js">
+  <!-- <Modal v-model="showVideo" footer-hide :closable="false" @on-cancel="cancel">
+          <video ref="videoPlayer" class="video-js" webkit-playsinline>
             <source
                 src="https://cdn-oss.yyang.net.cn/static/wishyoung/1630997736197444.mp4"
                 type="video/mp4"
             />
             </video>
-    </Modal>
+    </Modal> -->
 </div>
 </template>
 
@@ -110,6 +120,21 @@
             }
         },
         methods: {
+          afterLoad(origin, destination, direction) {
+            if(destination.index == 4 && this.player){
+              let __this = this;
+              //为防止干扰用户,需要等待一段时间播放
+               setTimeout(function() {
+                  __this.player.play();
+                  __this.player.options_.muted = false;
+                  console.info(__this.player.options_.muted);
+              }, 100);
+            }else if(this.player){
+              this.player.pause();
+            }
+            // console.info(origin.index,destination);
+            //console.log("Emitted 'after load' event.",origin, destination, direction);
+          },
             click() {
                 // vue调用fullpapge的方法
                 this.$refs.page.api.moveSectionDown();
@@ -172,10 +197,10 @@
     let options = {
       controls: true, // 是否显示底部控制栏
       preload: "auto", // 加载<video>标签后是否加载视频
-      autoplay: "muted", // muted 静音播放
+      autoplay: "autoplay", // muted 静音播放
       // playbackRates: [0.5, 1, 1.5, 2],// 倍速播放
-      width: "640",
-      height: "247",
+      width: "100%",
+      height: "180",
       controlBar: {
         // 自定义按钮的位置
         children: [
@@ -257,8 +282,18 @@
         background-color: rgba(31,45,61,.5);
         bottom:10px;
     }
-    .video-js{
-        width:100%;
+    .bg{
+      width:100%;
+      height:100%;
+      background-repeat:no-repeat;
+      background-size:100% 100%;
+      -moz-background-size:100% 100%;
+      background-image: url("https://cdn-oss.yyang.net.cn/static/wishyoung/13.png?x-oss-process=style/img_ys");
+    }
+    .video-box{
+      width:80%;
+      top: 52%;
+      margin: 0 auto;
     }
     div >>> .ivu-modal-body{
         padding:0px;
