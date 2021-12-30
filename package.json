@@ -46,9 +46,12 @@
     "axios": "^0.19.0",
     "copy-webpack-plugin": "^5.0.3",
     "html-res-webpack-plugin": "^4.0.5",
+    "js-cookie": "^3.0.1",
     "video.js": "^7.14.3",
     "vue": "^2.6.10",
     "vue-fullpage.js": "^0.1.7",
+    "vue-mobile-calendar": "^3.3.0",
+    "vuex": "^3.6.2",
     "weixin-js-sdk": "^1.6.0",
     "zantui": "^1.0.2"
   }

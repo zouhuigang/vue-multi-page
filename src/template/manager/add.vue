@@ -1,14 +1,10 @@
 <template>
-	<div style="margin:15px auto;width:90%;">
-		<Form :model="formItem" :label-width="60">
+	<div style="margin:15px auto;width:96%;">
+		<Form :model="formItem" :label-width="100">
 
-			<FormItem label="城市：">
-				<div>{{formItem.city}}</div>
-			</FormItem>
-
-			<FormItem label="openid：">
-				<div>{{formItem.openid}}</div>
-			</FormItem>
+			<!--			<FormItem label="城市：">-->
+			<!--				<div>{{formItem.city}}</div>-->
+			<!--			</FormItem>-->
 
 			<FormItem label="姓名：">
 				<div>{{formItem.realname}}</div>
@@ -40,11 +36,11 @@
 			</div>
 
 
-			<label class="control-label">银行卡正面照</label>
-			<div class="id-wrap"
-			     :class="formItem.bank == 'https://cdn-oss.yyang.net.cn/static/wishyoung/biaozhunic_b.jpg'? 'back':'filled'">
-				<img :src="formItem.bank" class="id-sample-img">
-			</div>
+			<!--			<label class="control-label">银行卡正面照</label>-->
+			<!--			<div class="id-wrap"-->
+			<!--			     :class="formItem.bank == 'https://cdn-oss.yyang.net.cn/static/wishyoung/biaozhunic_b.jpg'? 'back':'filled'">-->
+			<!--				<img :src="formItem.bank" class="id-sample-img">-->
+			<!--			</div>-->
 
 			<FormItem label="理由" style="margin-top:50px;" v-if="s_status !='通过'">
 				<Input v-model="memo" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
@@ -52,8 +48,8 @@
 			</FormItem>
 
 			<div style="width:100%;text-align: center;padding-bottom:20px;padding-right:15px;" v-if="s_status !='通过'">
-				<Button type="success"  @click="submitHandle('通过')">通过</Button>
-				<Button type="error"  @click="submitHandle('不通过')">不通过</Button>
+				<Button type="success" @click="submitHandle('通过')">通过</Button>
+				<Button type="error" @click="submitHandle('不通过')">不通过</Button>
 			</div>
 
 		</Form>
@@ -70,6 +66,7 @@
 			propformItem: {
 				type: Object,
 				default: {
+					id: 0,
 					realname: '',
 					mobile: '',
 					idfont: 'https://cdn-oss.yyang.net.cn/static/wishyoung/id-front.png',
@@ -77,7 +74,7 @@
 					idhand: 'https://cdn-oss.yyang.net.cn/static/wishyoung/img-hand-held-new.webp',
 					bank: 'https://cdn-oss.yyang.net.cn/static/wishyoung/biaozhunic_b.jpg',
 					city: '',
-					token: '',
+					token: '1b1c922d71ce796d',
 					memo: '',
 					s_status: '未审核'
 				}
@@ -100,7 +97,7 @@
 				visible: false,
 				uploadList: [],
 				memo: this.propformItem.memo,
-				token: '',
+				token: '1b1c922d71ce796d',
 				s_status: this.propformItem.s_status
 			}
 		},
@@ -140,6 +137,7 @@
 					"s_status": s_status,
 					"memo": this.memo,
 					"token": this.token,
+					"id": this.formItem.id,
 					"mobile": this.formItem.mobile
 				}).then(res => {
 					__this.LoadingShow = false;
@@ -154,13 +152,6 @@
 			}
 		},
 		created: function () {
-			this.token = this.getRequest("token");
-			if (!this.token) {
-				this.$Modal.error({
-					title: "获取秘钥失败",
-					content: "获取秘钥失败，请关闭页面重新进入"
-				});
-			}
 		},
 		mounted() {
 			// this.uploadList = this.$refs.upload.fileList;
@@ -253,5 +244,34 @@
 		font-weight: bold;
 		font-size: 14px;
 		color: #474747;
+	}
+
+	.lg {
+		font-size: 18px;
+	}
+
+	div >>> .ivu-radio-group-button.ivu-radio-group-large .ivu-radio-wrapper {
+		font-size: 18px;
+	}
+
+	div >>> .ivu-table-cell {
+		font-size: 16px;
+	}
+
+	div >>> .ivu-btn-primary, div >>> .ivu-btn-success {
+		font-size: 16px;
+	}
+
+	div >>> .ivu-form .ivu-form-item-label {
+		font-size: 16px;
+		font-weight: bold;
+	}
+
+	div >>> .ivu-form-item-content {
+		font-size: 16px;
+	}
+
+	div >>> .ivu-form-item {
+		margin-bottom: 12px;
 	}
 </style>

@@ -1,9 +1,8 @@
 <template>
-	<div style="margin:15px auto;width:90%;">
-		<Form :model="formItem" :label-width="60">
+	<div style="margin:15px auto;width:96%;">
+		<Form :model="formItem" :label-width="100">
 
 			<Alert type="error" v-if="formItem.s_status == '不通过'">不通过理由: {{formItem.memo}}</Alert>
-
 
 
 			<FormItem label="姓名：">
@@ -69,9 +68,10 @@
 			</Upload>
 
 			<div style="width:100%;text-align: center;">
-				<Button type="primary" @click="submitHandle"
+				<Button type="primary" :loading="LoadingShow" @click="submitHandle"
 				        style="background-color:#006801;width:70%;font-size: 24px;color: #fff;height:55.67px;margin:20px auto;">
-					提交
+					<span v-if="!LoadingShow">提交</span>
+					<span v-else>提交中...</span>
 				</Button>
 			</div>
 		</Form>
@@ -89,6 +89,7 @@
 				type: Object,
 				default: {
 					realname: '',
+					nickname: '',
 					mobile: '',
 					idfont: 'https://cdn-oss.yyang.net.cn/static/wishyoung/id-front.png',
 					idback: 'https://cdn-oss.yyang.net.cn/static/wishyoung/id-back.png',
@@ -114,6 +115,7 @@
 				],
 				imgName: '',
 				visible: false,
+				LoadingShow:false,
 				uploadList: []
 			}
 		},
@@ -140,9 +142,9 @@
 			beforeUploadIdfont(file) {
 				let __this = this;
 				//限制文件大小
-				const isLt2M = file.size / 1024 / 1024 < 5
+				const isLt2M = file.size / 1024 / 1024 < 15
 				if (!isLt2M) {
-					__this.$Message.error('上传文件大小不能超过 5MB!');
+					__this.$Message.error('上传文件大小不能超过 15MB!');
 					return false;
 				}
 				let reader = new FileReader();
@@ -157,9 +159,9 @@
 			beforeUploadIdback(file) {
 				let __this = this;
 				//限制文件大小
-				const isLt2M = file.size / 1024 / 1024 < 5
+				const isLt2M = file.size / 1024 / 1024 < 15
 				if (!isLt2M) {
-					__this.$Message.error('上传文件大小不能超过 5MB!');
+					__this.$Message.error('上传文件大小不能超过 15MB!');
 					return false;
 				}
 				let reader = new FileReader();
@@ -174,9 +176,9 @@
 			beforeUploadIdhand(file) {
 				let __this = this;
 				//限制文件大小
-				const isLt2M = file.size / 1024 / 1024 < 5
+				const isLt2M = file.size / 1024 / 1024 < 15
 				if (!isLt2M) {
-					__this.$Message.error('上传文件大小不能超过 5MB!');
+					__this.$Message.error('上传文件大小不能超过 15MB!');
 					return false;
 				}
 				let reader = new FileReader();
@@ -191,9 +193,9 @@
 			beforeUploadbank(file) {
 				let __this = this;
 				//限制文件大小
-				const isLt2M = file.size / 1024 / 1024 < 5
+				const isLt2M = file.size / 1024 / 1024 < 15
 				if (!isLt2M) {
-					__this.$Message.error('上传文件大小不能超过 5MB!');
+					__this.$Message.error('上传文件大小不能超过 15MB!');
 					return false;
 				}
 				let reader = new FileReader();
@@ -207,6 +209,7 @@
 			},
 			submitHandle() {
 				let __this = this;
+
 				if (!__this.formItem.realname) {
 					__this.$Message.error('请填写姓名!');
 					return false;
@@ -234,8 +237,13 @@
 					__this.$Message.error('请上传银行卡正面照!');
 					return false;
 				}
+				if (__this.LoadingShow) {
+					__this.$Message.error('正在提交中..!');
+					return false;
+				}
 
 				__this.LoadingShow = true;
+
 				api.submitId(JSON.stringify(__this.formItem)).then(res => {
 					__this.LoadingShow = false;
 					if (res.status == api.ERR_OK) {
@@ -251,6 +259,7 @@
 		created: function () {
 			this.formItem.city = this.getRequest("city");
 			this.formItem.openid = this.getRequest("openid");
+			this.formItem.nickname = decodeURIComponent(this.getRequest("nickname"));
 			if (!this.formItem.city) {
 				this.$Modal.error({
 					title: "获取城市码失败",
@@ -353,5 +362,30 @@
 		font-weight: bold;
 		font-size: 14px;
 		color: #474747;
+	}
+
+	.lg {
+		font-size: 18px;
+	}
+
+	div >>> .ivu-radio-group-button.ivu-radio-group-large .ivu-radio-wrapper {
+		font-size: 18px;
+	}
+
+	div >>> .ivu-table-cell {
+		font-size: 16px;
+	}
+
+	div >>> .ivu-btn-primary, div >>> .ivu-btn-success {
+		font-size: 16px;
+	}
+
+	div >>> .ivu-form .ivu-form-item-label {
+		font-size: 16px;
+		font-weight: bold;
+	}
+	div>>> .ivu-spin-fix{
+		height:200%;
+		background-color:rgba(0,0,0,0.5)
 	}
 </style>

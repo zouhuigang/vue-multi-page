@@ -1,20 +1,20 @@
 <template>
-	<div style="margin:15px auto;width:90%;">
+	<div style="margin:15px auto;width:96%;">
 
 		<div v-if="showAdd">
-			<Button @click="confirm" type="primary">关闭</Button>
+			<Button @click="confirm" type="primary" class="lg">关闭</Button>
 			<ViewE v-if="item.s_status == '通过'" :propformItem="item" @on-result-change="ControlModalChange"></ViewE>
 			<Add v-if="item.s_status != '通过'"  :propformItem="item" @on-result-change="ControlModalChange"></Add>
 		</div>
 
 		<div v-if="!showAdd">
-			<Button @click="confirm" type="primary">添加</Button>
+			<Button @click="confirm" type="primary" class="lg">添加</Button>
 
 			<Row style="margin-top:20px">
 				<RadioGroup v-model="formItem.selectStatus" @on-change="selectStatusChange" type="button" size="large">
-					<Radio label="待审核"></Radio>
-					<Radio label="不通过"></Radio>
-					<Radio label="通过"></Radio>
+					<Radio  class="lg" label="待审核"></Radio>
+					<Radio  class="lg" label="不通过"></Radio>
+					<Radio  class="lg" label="通过"></Radio>
 				</RadioGroup>
 			</Row>
 			<Table style="margin:15px 0;" :columns="columns1" :data="data1"></Table>
@@ -39,6 +39,7 @@
 			return {
 				formItem: {
 					city: '',
+					nickname:'',
 					openid: '',
 					selectStatus:'待审核'
 				},
@@ -51,7 +52,8 @@
 					},
 					{
 						title: '手机号',
-						key: 'mobile'
+						key: 'mobile',
+						width:150
 					},
 					{
 						title: "操作",
@@ -63,23 +65,24 @@
 							let s_status = params.row.s_status;
 							let html = '';
 							if (s_status == '未审核') {
-								html = ( <span
-								style = "margin-right:5px" >
+								html = ( <span>
 									<i-button
 								type = "primary"
 								label="small"
+								class="lg"
 								nativeOnClick = {this.ControlShow.bind(this, params.row)} > 编辑 </i-button>
 									< /span>);
 							}else if (s_status == '不通过') {
-								html = ( <span
-								style = "margin-right:5px" >
+								html = ( <span>
 									<i-button
 								type = "error"
+							class="lg"
 								nativeOnClick = {this.ControlShow.bind(this, params.row)} > 修改 </i-button>
 									< /span>);
 							}  else {
 								html = ( <span>
 									<i-button
+									class="lg"
 								type = "success"
 								nativeOnClick = {this.ControlShow.bind(this, params.row)} > 查看 </i-button>
 									< /span>);
@@ -99,7 +102,8 @@
 					bank: 'https://cdn-oss.yyang.net.cn/static/wishyoung/biaozhunic_b.jpg',
 					city: '',
 					openid: '',
-					status:'未审核'
+					status:'未审核',
+					nickname:''
 				}
 			}
 		},
@@ -117,7 +121,8 @@
 					idhand: 'https://cdn-oss.yyang.net.cn/static/wishyoung/img-hand-held-new.webp',
 					bank: 'https://cdn-oss.yyang.net.cn/static/wishyoung/biaozhunic_b.jpg',
 					city: '',
-					openid: ''
+					openid: '',
+					nickname:'',
 				};
 				this.showAdd = !this.showAdd;
 			},
@@ -162,12 +167,15 @@
 		created: function () {
 			this.formItem.city = this.getRequest("city");
 			this.formItem.openid = this.getRequest("openid");
+			this.formItem.nickname = this.getRequest("nickname");
 			if (!this.formItem.city) {
 				this.$Modal.error({
 					title: "获取城市码失败",
 					content: "获取城市码失败，请关闭页面重新进入"
 				});
 			}
+
+
 			if (!this.formItem.openid) {
 				this.jump("http://c3.yyang.net.cn/api/reset/Qwq/auth?city=" + this.formItem.city);
 			}
@@ -257,7 +265,23 @@
 		max-width: 100%;
 		margin-bottom: 5px;
 		font-weight: bold;
-		font-size: 14px;
+		font-size: 18px;
 		color: #474747;
+	}
+
+	.lg {
+		font-size: 18px;
+	}
+	div>>>.ivu-radio-group-button.ivu-radio-group-large .ivu-radio-wrapper{
+		font-size: 18px;
+	}
+	div>>>.ivu-table-cell{
+		font-size: 16px;
+	}
+	div>>>.ivu-btn-primary,div>>>.ivu-btn-success{
+		font-size: 16px;
+	}
+	div>>>.ivu-form .ivu-form-item-label{
+		font-size: 16px;
 	}
 </style>

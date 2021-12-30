@@ -1,13 +1,9 @@
 <template>
-	<div style="margin:15px auto;width:90%;">
-		<Form :model="formItem" :label-width="60">
+	<div style="margin:15px auto;width:96%;">
+		<Form :model="formItem" :label-width="100">
 
 			<FormItem label="城市：">
 				<div>{{formItem.city}}</div>
-			</FormItem>
-
-			<FormItem label="openid：">
-				<div>{{formItem.openid}}</div>
 			</FormItem>
 
 			<FormItem label="姓名：">
@@ -188,5 +184,27 @@
 		font-weight: bold;
 		font-size: 14px;
 		color: #474747;
+	}
+	.lg {
+		font-size: 18px;
+	}
+	div>>>.ivu-radio-group-button.ivu-radio-group-large .ivu-radio-wrapper{
+		font-size: 18px;
+	}
+	div>>>.ivu-table-cell{
+		font-size: 16px;
+	}
+	div>>>.ivu-btn-primary,div>>>.ivu-btn-success{
+		font-size: 16px;
+	}
+	div>>>.ivu-form .ivu-form-item-label{
+		font-size: 16px;
+		font-weight: bold;
+	}
+	div>>>.ivu-form-item-content{
+		font-size: 16px;
+	}
+	div>>>.ivu-form-item{
+		margin-bottom: 12px;
 	}
 </style>

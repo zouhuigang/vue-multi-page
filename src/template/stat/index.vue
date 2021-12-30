@@ -1,19 +1,21 @@
 <template>
 	<div style="margin:15px auto;width:96%;">
-		<Alert class="lg">管理端</Alert>
+
 		<div v-if="showAdd">
-			<Button @click="confirm" type="primary">关闭</Button>
-			<Add :propformItem="item" @on-result-change="ControlModalChange"></Add>
+			<Button @click="confirm" type="primary" class="lg">关闭</Button>
+			<ViewE :propformItem="formItem" @on-result-change="ControlModalChange"></ViewE>
 		</div>
 
 		<div v-if="!showAdd">
-			<Row style="margin-top:20px">
-				<RadioGroup v-model="formItem.selectStatus" @on-change="selectStatusChange" type="button" size="large">
-					<Radio label="待审核"></Radio>
-					<Radio label="不通过"></Radio>
-					<Radio label="通过"></Radio>
-				</RadioGroup>
-			</Row>
+			<label>日期：<Input v-model="formItem.date" placeholder="选择日期" readonly @on-focus="selectDate" style="width: 250px" /></label>
+
+			<calendar
+					:minDate="minDate"
+					:maxDate="maxDate"
+					:show.sync="show"
+					:defaultDate="defaultDate"
+					mode="during"
+					@change="onChange"/>
 			<Table style="margin:15px 0;" :columns="columns1" :data="data1"></Table>
 		</div>
 	</div>
@@ -21,76 +23,82 @@
 
 
 <script>
+	Date.prototype.Format = function (fmt) { //author: meizz
+		var o = {
+			"M+": this.getMonth() + 1, //月份
+			"d+": this.getDate(), //日
+			"h+": this.getHours(), //小时
+			"m+": this.getMinutes(), //分
+			"s+": this.getSeconds(), //秒
+			"q+": Math.floor((this.getMonth() + 3) / 3), //季度
+			"S": this.getMilliseconds() //毫秒
+		};
+		if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		for (var k in o)
+			if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		return fmt;
+	}
 	import api from '@/libs/api.js';
-	import Add from "./add.vue";
-	import { Tag,Row  } from 'zantui';
+	import ViewE from "./view.vue";
 
 	export default {
 		name: 'app',
 		components: {
-			Add
+			ViewE
 		},
 		data() {
 			return {
 				formItem: {
-					token: '1b1c922d71ce796d',
-					selectStatus:'待审核'
+					date: JSON.stringify([(new Date()).Format("yyyy-MM-dd")]),
+					city:'',
+					openid:''
 				},
 				showAdd: false,
+				minDate: new Date('2021/1/1'),
+				maxDate: new Date(),//设置过期时间为当天
+				show: false,
+				defaultDate: new Date(),
 				columns1: [
 					{
-						title: '姓名',
-						key: 'realname',
-						width:100
-					},
-					{
-						title: '手机号',
-						key: 'mobile',
-						width:150
-					},
-					{
-						title: "操作",
-						align: "center",
-						key: "handle",
+						title: '微信',
+						key: 'nickname',
+						width: 100,
 						render: (h, params) => {
-							let mobile=params.row.mobile;
-							let s_status=params.row.s_status;
-							let html='';
-							if(s_status == '未审核'){
-								html=(<span>
-									<i-button   type="primary" nativeOnClick={this.ControlShow.bind(this,params.row)}>审核</i-button>
-									</span>);
-							}else if(s_status == '不通过'){
-								html=(<span>
-									<i-button  type="primary" nativeOnClick={this.ControlShow.bind(this,params.row)}>审核</i-button>
-									</span>);
-							}else{
-								html=(<span>
-									<i-button  type="success" nativeOnClick={this.ControlShow.bind(this,params.row)}>查看</i-button>
-									</span>);
-							}
-
-							return (<div>{html}</div>);
+							let nickname = params.row.nickname;
+							return (<a onClick={this.ControlShow.bind(this,params.row)} nativeOnClick="this.ControlShow.bind(this,params.row)">{nickname}</a>)
 						}
-					}
+					},
+					{
+						title: '城市',
+						key: 'city',
+					},
+					{
+						title: '统计',
+						key: 'count0',
+						width: 150,
+						render: (h, params) => {
+							let count0 = params.row.count0;
+							let count1 = params.row.count1;
+							let count2 = params.row.count2;
+							let html = '';
+							return (<div><p> 审核中:<strong style="color:#fc5531">{count0}</strong></p>
+							<p>不通过:{count1}</p> 通过:<strong style="color:#008000">{count2}</strong></div>)
+						}
+					},
 				],
-				data1: [],
-				item:{
-					realname: '',
-					mobile: '',
-					idfont: 'https://cdn-oss.yyang.net.cn/static/wishyoung/id-front.png',
-					idback: 'https://cdn-oss.yyang.net.cn/static/wishyoung/id-back.png',
-					idhand: 'https://cdn-oss.yyang.net.cn/static/wishyoung/img-hand-held-new.webp',
-					bank: 'https://cdn-oss.yyang.net.cn/static/wishyoung/biaozhunic_b.jpg',
-					city: '',
-					openid: ''
-				}
+				data1: []
 			}
 		},
 		methods: {
-			selectStatusChange(v){
+			selectStatusChange(v) {
 				this.formItem.selectStatus = v;
-				this.formItem.token = '1b1c922d71ce796d';
+				this.loadList();
+			},
+			selectDate() {
+				this.show = true;
+			},
+			onChange(date) {
+				this.formItem.date = JSON.stringify(date.map((item) => item.format('YYYY-MM-DD')));
 				this.loadList();
 			},
 			confirm() {
@@ -102,12 +110,13 @@
 					idhand: 'https://cdn-oss.yyang.net.cn/static/wishyoung/img-hand-held-new.webp',
 					bank: 'https://cdn-oss.yyang.net.cn/static/wishyoung/biaozhunic_b.jpg',
 					city: '',
-					openid: ''
+					openid: '',
+					nickname: '',
 				};
 				this.showAdd = !this.showAdd;
 			},
 			ControlShow(item) {
-				this.item = item;
+				this.formItem.openid = item.openid;
 				this.showAdd = true;
 			},
 			ControlModalChange(val) {
@@ -134,7 +143,8 @@
 			},
 			loadList() {
 				let __this = this;
-				api.getList(JSON.stringify(__this.formItem)).then(res => {
+				__this.data1 = [];
+				api.getStat(JSON.stringify(__this.formItem)).then(res => {
 					__this.LoadingShow = false;
 					if (res.status == api.ERR_OK) {
 						__this.data1 = res.data;
@@ -144,6 +154,8 @@
 			}
 		},
 		created: function () {
+			this.formItem.city = decodeURIComponent(this.getRequest("city"));
+
 			this.loadList();
 		},
 		mounted() {
@@ -230,24 +242,30 @@
 		max-width: 100%;
 		margin-bottom: 5px;
 		font-weight: bold;
-		font-size: 14px;
+		font-size: 18px;
 		color: #474747;
 	}
-
 
 	.lg {
 		font-size: 18px;
 	}
-	div>>>.ivu-radio-group-button.ivu-radio-group-large .ivu-radio-wrapper{
+
+	div >>> .ivu-radio-group-button.ivu-radio-group-large .ivu-radio-wrapper {
 		font-size: 18px;
 	}
-	div>>>.ivu-table-cell{
+
+	div >>> .ivu-table-cell {
 		font-size: 16px;
 	}
-	div>>>.ivu-btn-primary,div>>>.ivu-btn-success{
+
+	div >>> .ivu-btn-primary, div >>> .ivu-btn-success {
 		font-size: 16px;
 	}
-	div>>>.ivu-form .ivu-form-item-label{
+
+	div >>> .ivu-form .ivu-form-item-label {
 		font-size: 16px;
+	}
+	div>>>.ivu-input{
+		font-size:18px;
 	}
 </style>
