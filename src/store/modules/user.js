@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 const user = {
 	state: {
 		token: Cookies.get("token") || null,
+		sid: Cookies.get("sid") || null,
 	},
 	mutations: {
 		logout(state, data) {
@@ -13,7 +14,8 @@ const user = {
 		},
 		login(state, token) {
 			//如果不设置过期时间，会默认关闭浏览器自动清除cookie,所以设置缓存90天
-			Cookies.set("token", token, {expires: 90});
+			// Cookies.set("token", token, {expires: 90});
+			Cookies.set("token", token);
 			state.token = token;
 		}
 	}

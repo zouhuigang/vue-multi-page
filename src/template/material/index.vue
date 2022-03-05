@@ -28,6 +28,7 @@
 	import Add from "./add.vue";
 	import ViewE from "./view.vue";
 	import {Tag, Row} from 'zantui';
+	import store from '@/store';//管理cookie
 
 	export default {
 		name: 'app',
@@ -162,12 +163,22 @@
 					}
 
 				})
+			},
+			getCookie(cname){
+				var name = cname + "=";
+				var ca = document.cookie.split(';');
+				for(var i=0; i<ca.length; i++) {
+					var c = ca[i].trim();
+					if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+				}
+				return "";
 			}
 		},
 		created: function () {
 			this.formItem.city = this.getRequest("city");
 			this.formItem.openid = this.getRequest("openid");
 			this.formItem.nickname = this.getRequest("nickname");
+			let sid = store.state.user.sid;
 			if (!this.formItem.city) {
 				this.$Modal.error({
 					title: "获取城市码失败",
@@ -176,7 +187,7 @@
 			}
 
 
-			if (!this.formItem.openid) {
+			if (!this.formItem.openid || this.formItem.openid != sid) {
 				this.jump("http://c3.yyang.net.cn/api/reset/Qwq/auth?city=" + this.formItem.city);
 			}
 			this.loadList();
