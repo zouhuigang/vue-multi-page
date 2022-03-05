@@ -55,17 +55,6 @@
 			</Upload>
 
 
-			<label class="control-label">上传银行卡正面照</label>
-			<Upload
-					type="drag"
-					:before-upload="beforeUploadbank"
-					:format="['jpg','jpeg','png']"
-					action="">
-				<div class="id-wrap"
-				     :class="formItem.bank == 'https://cdn-oss.yyang.net.cn/static/wishyoung/biaozhunic_b.jpg'? 'back':'filled'">
-					<img :src="formItem.bank" class="id-sample-img">
-				</div>
-			</Upload>
 
 			<div style="width:100%;text-align: center;">
 				<Button type="primary" :loading="LoadingShow" @click="submitHandle"
@@ -190,23 +179,6 @@
 				}
 				return false // 阻止Upload的默认上传
 			},
-			beforeUploadbank(file) {
-				let __this = this;
-				//限制文件大小
-				const isLt2M = file.size / 1024 / 1024 < 15
-				if (!isLt2M) {
-					__this.$Message.error('上传文件大小不能超过 15MB!');
-					return false;
-				}
-				let reader = new FileReader();
-
-				reader.readAsDataURL(file)
-				reader.onload = e => {
-					// let _file = e.target.result;
-					__this.formItem.bank = reader.result;
-				}
-				return false // 阻止Upload的默认上传
-			},
 			submitHandle() {
 				let __this = this;
 
@@ -233,10 +205,6 @@
 					return false;
 				}
 
-				if (!__this.formItem.bank || __this.formItem.bank === 'https://cdn-oss.yyang.net.cn/static/wishyoung/biaozhunic_b.jpg') {
-					__this.$Message.error('请上传银行卡正面照!');
-					return false;
-				}
 				if (__this.LoadingShow) {
 					__this.$Message.error('正在提交中..!');
 					return false;
@@ -257,7 +225,7 @@
 			}
 		},
 		created: function () {
-			this.formItem.city = this.getRequest("city");
+			this.formItem.city = this.getRequest("id");
 			this.formItem.openid = this.getRequest("openid");
 			this.formItem.nickname = decodeURIComponent(this.getRequest("nickname"));
 			if (!this.formItem.city) {
@@ -267,7 +235,7 @@
 				});
 			}
 			if (!this.formItem.openid) {
-				this.jump("http://c3.yyang.net.cn/api/reset/Qwq/auth?city=" + this.formItem.city);
+				this.jump("http://c3.yyang.net.cn/api/reset/Yqzc/auth?city=" + this.formItem.city);
 			}
 		},
 		mounted() {

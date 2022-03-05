@@ -35,13 +35,6 @@
 				<img :src="formItem.idhand" class="id-sample-img">
 			</div>
 
-
-			<label class="control-label">银行卡正面照</label>
-			<div class="id-wrap"
-			     :class="formItem.bank == 'https://cdn-oss.yyang.net.cn/static/wishyoung/biaozhunic_b.jpg'? 'back':'filled'">
-				<img :src="formItem.bank" class="id-sample-img">
-			</div>
-
 		</Form>
 	</div>
 </template>
@@ -81,7 +74,7 @@
 			}
 		},
 		created: function () {
-			this.formItem.city = this.getRequest("city");
+			this.formItem.city = this.getRequest("id");
 			this.formItem.openid = this.getRequest("openid");
 			if (!this.formItem.city) {
 				this.$Modal.error({
@@ -90,7 +83,7 @@
 				});
 			}
 			if (!this.formItem.openid) {
-				this.jump("http://c3.yyang.net.cn/api/reset/Qwq/auth?city=" + this.formItem.city);
+				this.jump("http://c3.yyang.net.cn/api/reset/Yqzc/auth?city=" + this.formItem.city);
 			}
 		},
 		mounted() {

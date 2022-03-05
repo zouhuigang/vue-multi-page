@@ -175,7 +175,7 @@
 			}
 		},
 		created: function () {
-			this.formItem.city = this.getRequest("city");
+			this.formItem.city = this.getRequest("id");
 			this.formItem.openid = this.getRequest("openid");
 			this.formItem.nickname = this.getRequest("nickname");
 			let sid = store.state.user.sid;
@@ -188,7 +188,7 @@
 
 
 			if (!this.formItem.openid || this.formItem.openid != sid) {
-				this.jump("http://c3.yyang.net.cn/api/reset/Qwq/auth?city=" + this.formItem.city);
+				this.jump("http://c3.yyang.net.cn/api/reset/Yqzc/auth?city=" + this.formItem.city);
 			}
 			this.loadList();
 		},

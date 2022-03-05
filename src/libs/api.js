@@ -35,7 +35,7 @@ axios.interceptors.response.use((res) => {
 				//   path: '/user/login',
 				//   query: {redirect: router.currentRoute.fullPath}
 				// });
-				window.location.href = '/p/gwq/login.html';
+				window.location.href = '/p/yqzc/login.html';
 		}
 
 		return res
@@ -65,23 +65,23 @@ export default {
 		return fetch(API_PRE + 'collections/' + id + '/count/' + type, params)
 	},
 	getLogin(params){
-		return fetch(API_PRE + 'Qwq/login', params)
+		return fetch(API_PRE + 'Yqzc/login', params)
 	},
 	//https://c3.yyang.net.cn/api/reset/Qwq/getSignPackage?url=111
 	shareWeiXinSign(url) {
-		return fetch(API_PRE + 'Qwq/getSignPackage?url=' + url)
+		return fetch(API_PRE + 'Yqzc/getSignPackage?url=' + url)
 	},
 	submitId(params) {
-		return fetch(API_PRE + 'Qwq/submitid', params)
+		return fetch(API_PRE + 'Yqzc/submitid', params)
 	},
 	getList(params) {
-		return fetch(API_PRE + 'Qwq/getList', params)
+		return fetch(API_PRE + 'Yqzc/getList', params)
 	},
 	getStat(params) {
-		return fetch(API_PRE + 'Qwq/getStat', params)
+		return fetch(API_PRE + 'Yqzc/getStat', params)
 	},
 	getStatView(params) {
-		return fetch(API_PRE + 'Qwq/getStatView', params)
+		return fetch(API_PRE + 'Yqzc/getStatView', params)
 	},
 
 }
