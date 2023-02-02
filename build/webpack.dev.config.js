@@ -16,18 +16,11 @@ module.exports = merge(webpackBaseConfig, {
         stats: {colors: true},
         port: '8080',
         proxy: {
-            '/restricted': {
-                target: 'https://c3.helendoctor.com',
+            '/embeddings': {
+                target: 'http://localhost:9000',
                 changeOrigin: true,
                 pathRewrite: {
-                    '^/restricted': '/restricted'
-                }
-            },
-            '/api': {
-                target: 'http://47.100.163.22:20003',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/api': '/api'
+                    '^/embeddings': '/embeddings'
                 }
             },
             '/mock': {

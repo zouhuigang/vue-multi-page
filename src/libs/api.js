@@ -10,10 +10,10 @@ const ERR_IMPERFECT = 12;
 //普通用户接口路由
 const API_PRE_AUTH = "/restricted/api/"
 //不限制
-const API_PRE = "/api/"
+const API_PRE = "/"
 //管理员接口路由
 const API_ADMIN_AUTH = "/restricted/api/admin/"
-const IS_FORM_DATA = true;
+const IS_FORM_DATA = false;
 
 
 //拦截请求
@@ -85,82 +85,10 @@ export function fetch(url, params) {
 
 export default {
     ERR_OK,
-    /**
-     * 获取广告信息
-     */
-    getLogin(params) {
-        return fetch('/api/v1.0/user/signin', params)
+    getDataList(params) {
+        return fetch(API_PRE+"embeddings/", params)
     },
-    UserUpdate(params) {
-        return fetch(API_PRE_AUTH + 'user/update', params)
-    },
-    signOut() {//通知服务器,token过期
-        return fetch(API_PRE_AUTH + 'user/signout')
-    },
-    getUserInfo(params) {//获取用户信息，同时验证token是否有效
-        return fetch(API_PRE_AUTH + 'user/info', params)
-    },
-    AuthUrl(params) {//微信授权链接
-        return fetch(API_PRE + 'weixin/snsapi_base/page1', params)
-    },
-    AuthCode(params) {
-        return fetch(API_PRE + 'weixin/snsapi_base/page2', params)
-    },
-    sendMobileVerCode(params) {
-        return fetch(API_PRE_AUTH + 'user/send/sms', params)
-    },
-    uploadImageHandle(params) {
-        return fetch(API_PRE_AUTH + 'user/upload/image', params)
-    },
-    StorySubmit(params) {
-        return fetch(API_PRE_AUTH + 'user/story/submit', params)
-    },
-    MyOrderList(params) {
-        return fetch('/mock/list/2', params)
-    },
-    MyOrderInfo(params) {
-        return fetch(API_PRE_AUTH + 'user/myorder/info', params)
-    },
-    ChatList(params) {
-        return fetch(API_PRE_AUTH + 'chat/list', params)
-    },
-    ChatSend(params) {
-        return fetch(API_PRE_AUTH + 'chat/send', params)
-    },
-    ChatPageInit(params) {
-        return fetch(API_PRE_AUTH + 'chat/page/init', params)
-    },
-    MenuList(params) {
-        return fetch(API_PRE_AUTH + 'user/menu/list', params)
-    },
-    InviteList() {
-        return fetch(API_PRE_AUTH + 'user/invite')
-    },
-    ShareSign(params) {
-        return fetch(API_PRE + 'weixin/share/sign', params)
-    },
-    PayWeixin(params) {
-        return fetch(API_PRE_AUTH + 'payment/pay/weixin', params)
-    },
-    AdminOrderList(params) {
-        return fetch(API_ADMIN_AUTH + 'order/list', params)
-    },
-    AdminOrderInit(params) {
-        return fetch(API_ADMIN_AUTH + 'order/init', params)
-    },
-    AdminOrderChat(params) {
-        return fetch(API_ADMIN_AUTH + 'chat/list', params)
-    },
-    AdminUpdateOrder(params) {
-        return fetch(API_ADMIN_AUTH + 'order/update', params)
-    },
-    AdminAccompanistList(params) {
-        return fetch(API_ADMIN_AUTH + 'accompanist/list', params)
-    },
-    InvitationToOrder(params) {
-        return fetch(API_ADMIN_AUTH + 'accompanist/invitation/order', params)
-    },
-    ProductList(params) {
-        return fetch(API_PRE + 'v1/product/getList', params)
+    saveForm(params) {
+        return fetch(API_PRE+"embeddings/save", params)
     }
 }
